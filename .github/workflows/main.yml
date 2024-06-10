@@ -23,12 +23,11 @@ jobs:
           curl -LO https://github.com/mstorsjo/llvm-mingw/releases/download/20240606/llvm-mingw-20240606-ucrt-macos-universal.tar.xz
           tar -Jxvf llvm-mingw-20240606-ucrt-macos-universal.tar.xz
           sudo mv llvm-mingw-20240606-ucrt-macos-universal /opt/llvm-mingw
-          export PATH=/opt/llvm-mingw/bin:/opt/homebrew/opt/bison/bin:$PATH
+          export PATH=/opt/homebrew/opt/bison/bin:$PATH:/opt/llvm-mingw/bin
           git clone https://gitlab.winehq.org/jhol/wine.git
           cd wine/
           git checkout aed38b3fea259c23738d60df67d562592d394393
-          # --enable-archs=x86_64,aarch64 
-          ./configure --prefix=/opt/wine --disable-tests CC=/usr/bin/clang CXX=/usr/bin/clang++
+          ./configure --prefix=/opt/wine --disable-tests --enable-archs=x86_64,aarch64 CC=/usr/bin/clang CXX=/usr/bin/clang++
           make -j8
           make DESTDIR=${GITHUB_WORKSPACE}/install install
       - name: upload
